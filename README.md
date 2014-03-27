@@ -10,3 +10,18 @@ PHC-WIN is a php complier/embeder. It takes [multiple] files and combines them i
   - Windows Vista
   - Windows 7
   - Windows 8
+
+  
+ ## Authors ##
+  - [frantik] (swiftlytilting.com) Original Maintainer
+  - [RainbowDashDC] (rainbowdashdc.com) Current Maintainer.
+  
+## License ##
+GNUGPLv3
+
+## Compiling from source ##
+Compile phc-win with the directory option with the old version of phc-win (http://wiki.swiftlytilting.com/phc-win).
+
+Copy into top of REDIST folder.
+
+A better method is being worked on.
