@@ -1,7 +1,7 @@
 <?php
 
 /**
- * phc-embed.inc.php - object oriented interface for embeder application
+ * phc-embed.inc.php - object oriented interface for embedder application
  *
  * (c) 2006 by frantik
  * 
@@ -43,7 +43,7 @@ class embeder {
    {
      $link = $this->trimpath($link === null ? $filename : $link);
     
-      echo "Adding $filename as $link\n";
+      echo "Adding $filename as $link\n";                                                                                                    
       return _exec($this->embed()." add $this->name \"$filename\" \"$link\"");
    }
    

@@ -14,6 +14,10 @@ function bcomp() {
 	return "lib\\bin\\bcomp.exe";
 }
 
+/**
+	Execute a command and get it's err code. If 0, true, if not false.
+	@return bool
+**/
 function _exec($cmd)
 { 
    $WshShell = new COM("WScript.Shell");
@@ -28,7 +32,7 @@ function _exec($cmd)
       $cwd = '"' . $cwd;
    }
    //echo "\nexec: cmd /C \" $cwd\\$cmd \"\n";
-   $oExec = $WshShell->Run("cmd /C \" $cwd\\$cmd\" >> ./cmd.log", 0,true);
+   $oExec = $WshShell->Run("cmd /C \" $cwd\\$cmd\" >> ./compile.log", 0,true);
    
    return $oExec == 0 ? true : false;
 }
@@ -36,7 +40,6 @@ function _exec($cmd)
 
 function bcompile($input, $output)
 {
-	echo bcomp();
 	return _exec(bcomp()." \"$input\" \"$output\"");
 }
 
@@ -59,7 +62,8 @@ function getfileparts($file)
 }
 
 function simpleEXE($mainfile)
-{  global $wbSystem;   
+{  
+   global $wbSystem;   
    $dotparts=explode('.',$mainfile);
    $ext = array_pop($dotparts);
    if (strpos($ext,'\\'))
@@ -73,20 +77,31 @@ function simpleEXE($mainfile)
    $basename = array_pop($slashparts);
    $path = implode('\\',$slashparts);     
    
+   logger($path);
+   
    $bcompfile =$path.'\\'.$basename . '.phb';
+   $finalexe =$path.'\\'.$basename . '.exe';
+   if(file_exists($finalexe)) {
+		echo "Removing old EXE: $finalexe...";
+		shell_exec("del /q /f \"$finalexe\"");
+		echo "done\n";
+   }
+   if(file_exists($bcompfile)) {
+		echo "Removing: $bcompfile...";
+		shell_exec("del /q /f \"$bcompfile\"");
+		echo "done\n";
+   }
    echo "Compiling: $basename.$ext --> $basename.phb... ";
    $wbSystem->edit->text = ob_get_contents();
-   $wait = $wbSystem->main->wait(50);
-   if (bcompile($mainfile,$bcompfile) === false)
-   {  echo "Unable to compile.\n";
-   }
-   else
-   {  
+   //$wait = $wbSystem->main->wait(50);
+   if (bcompile($mainfile,$bcompfile) === false) { 
+		echo "Unable to compile.\n";
+   } else {  
       echo "done.\n";
       echo "Done compiling.\n\n";
       echo "Embedding compiled code EXE: $basename.phb --> $basename.exe\n";
       $wbSystem->edit->text = ob_get_contents();
-      $wait = $wbSystem->main->wait(50);
+      //$wait = $wbSystem->main->wait(50);
       $exe = createEXE($basename);
       $exe->addMain($bcompfile);
       
@@ -100,8 +115,37 @@ function simpleEXE($mainfile)
    return true;
 }
 
+function openingText() {
+	$var = "phc-win $version (c) 2014 Andrew Fitzgerald, RainbowDashDC [RDashINC]\n";
+	$var .= "PHP Version: ".phpversion()."\n";
+	$var .= "\n";
+    $var .= "* To compile a single file:\n";
+    $var .= "   - Choose 'Compile single file' from the File menu.\n";
+	$var .= "   - Then select the file to compile.\n";
+	$var .= "\n";
+    $var .= "* To build an EXE containing all files in a directory and all sub directories:\n";
+    $var .= "	 - Choose 'Compile directory' from the File menu.\n";
+    $var .= "	 - Select the project folder.\n   - Select the main program file.\n";
+    $var .= "    - phc-win will then recursively scan the specified directory.\n";
+    $var .= "	 - All files with 'php' anywhere in the extension will be compiled into .phb files.\n";
+    $var .= "	 - These .phb files, along with all files in the directory tree will be added to the project EXE.\n";
+	$var .= "\n";
+    $var .= "* Once the EXE has been created, you will be asked about the EXE type:\n";
+    $var .= "	 - CONSOLE (displays CMD Window box)\n";
+    $var .= "	 - WINDOWS (no CMD Window box).\n\n";
+    $var .= "* Place the EXE in the same directory with the required DLL file(s) and php-embed.ini file if needed.";
+	return $var;
+}
+
+function logger($path) {
+	shell_exec("cmd /C \"echo Logging Started. > $path\\compile.log\"");
+	echo "Log started \"$path\\compile.log\"\n";
+}
+
 function complexEXE($mainfile, $addfiles, $path)
-{  global $wbSystem;
+{ 
+   logger($path); 
+   global $wbSystem;
  
    
    array_push($addfiles, $mainfile);
@@ -115,12 +159,19 @@ function complexEXE($mainfile, $addfiles, $path)
       if (!$err)
       {  extract(getfileparts($v));
          
-         if (stripos($ext,'php') !== false )
-         {  $bcompfile ="$path\\$basename.phb";
+		 if(stripos($ext,'phb') !== false ) {
+			// Remove .phbs untill we have a way too check if they've been changed or not.
+			// TODO: Use sha256 too check if file has changed?
+		    echo "Removing: $basename.$ext...";
+			shell_exec("del /q /f \"$path\\$basename.phb\"");
+			echo "done\n";
+         } elseif (stripos($ext,'php') !== false ) {  
+		    $bcompfile ="$path\\$basename.phb";
+			$finalexe =$path.'\\'.$basename . '.exe';
          
             echo("Compiling: $basename.$ext --> $basename.phb... ");
             $wbSystem->edit->text = ob_get_contents();
-            $wbSystem->main->wait(50);
+            //$wbSystem->main->wait(50);
             if (file_exists($bcompfile))
             {  echo "file already compiled.\n";
                if (($loc = array_search($bcompfile, $addfiles)) !== false)
@@ -131,7 +182,7 @@ function complexEXE($mainfile, $addfiles, $path)
                {
                   echo "done\n";
                } else
-               {  echo "\nUnable to compile.\n";
+               {  echo "\nUnable to compile. - See compile.log in \"$path\"\n";
                   $err = true;
                }
             }
@@ -146,7 +197,13 @@ function complexEXE($mainfile, $addfiles, $path)
             }
          }
       }            
-   }  
+   } 
+
+   if(file_exists($finalexe)) {
+		echo "Removing old EXE: $finalexe...";
+		shell_exec("del /q /f \"$finalexe\"");
+		echo "done\n";
+   }   
    
    // Embed files
    if (!$err)
@@ -165,7 +222,7 @@ function complexEXE($mainfile, $addfiles, $path)
       
       $exe = createEXE($mainparts['basename'], $path);
       $wbSystem->edit->text = ob_get_contents();
-      $wbSystem->main->wait(50); 
+      //$wbSystem->main->wait(50); 
       $exe->addMain($mainparts['path'].'/'."$mainbasename.phb");
       $wbSystem->edit->text = ob_get_contents();
       
