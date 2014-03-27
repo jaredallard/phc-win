@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * phc-win - Windows application for creating EXE files from PHP code
+ *
+ * (c) 2009 by Andrew Fitzgerald
+ * 
+ * http://wiki.swiftlytilting.com/phc-win
+ *
+ */
+
+$version = '0.3.1';
+
+function exe_resource($file) 
+{  return defined('EMBEDED') ? 'res:///PHP/'.md5($file):(getcwd() . "/$file");  
+}   
+
+
+include_once(exe_resource('./wbObjects/wbObjects.php'));
+include_once(exe_resource('./phc-embed.inc.php'));
+include_once(exe_resource('./phc-functions.inc.php'));
+
+
+
+$main = $wbSystem->createWindow(ResizableWindow, 'main', 'phc-win '.$version, 750, 540);
+
+file_put_contents('./phc.ico',file_get_contents(exe_resource('./icon/phc.ico')));
+$main->setIcon('./phc.ico');
+unlink('./phc.ico');
+
+$main->createControl(Menu, 'menu', array
+                             (   '&File',
+                                     array('menu_compile_file', "Compile single &file\tCtrl+F",     "","" ,  "CTRL+F"),
+                                     array('menu_compile_dir', "Compile &directory\tCtrl+D",'','','CTRL+D'),
+                                     null,
+                                     array('menu_set_type', "Set &EXE type"),
+                                     null,
+                                     array('closeMain', "E&xit"),
+											'&Help',
+												 array('about', "About"),
+                              )
+                     );
+                     
+
+$edittext = "phc-win $version (c) 2009 Andrew Fitzgerald - contact@swiftlytilting.com \nPHP Version: ".phpversion()."\n\n" .
+   "* To compile a single file:\n   - Choose 'Compile single file' from the File menu.\n   - Then select the file to compile.\n\n" .   
+   "* To build an EXE containing all files in a directory and all sub directories:\n   - Choose 'Compile directory' from the File menu.\n   - Select the project folder.\n   - Select the main program file.\n" .
+   "   - phc-win will then recursively scan the specificed directory.\n   - All files with 'php' anywhere in the extension will be compiled into .phb files.\n  - These .phb files, along with all files in the directory tree will be added to the project EXE.\n\n ".
+   "* Once the EXE has been created, you will be asked about the EXE type:\n   - CONSOLE (displays DOS box)\n   - WINDOWS (no DOS box).\n\n".
+   "* Place the EXE in the same directory with the required DLL file(s) and php-embed.ini file if needed.";
+   
+$winsize = $main->getSize(true);
+$main->createControl(EditBox,'edit',$edittext,5,5, $winsize['width']-10 , $winsize['height']/2-10, WBC_MULTILINE | WBC_READONLY);
+
+
+$main->onResize('resizeMain');
+$main->onClose('closeMain');
+
+$wbSystem->start();
+
+
+function menu_compile_file($params)
+{
+   ob_start();
+   $edit =& $params['wbSystem']->edit;
+   $exepath = getcwd();
+   $filter = array(array('PHP Files','*.php'),array('PHPW Files', '*.phpw'));
+   $filename = '';
+
+   if($filename = $params['window']->dialogOpen('Compile file',$filter,$exepath))   
+   { 
+      simpleEXE($filename);
+      $out = ob_get_contents();
+      ob_end_clean();
+      $edit->text = $out;
+   }
+}
+
+
+function menu_compile_dir($params)
+{
+   ob_start();
+   $wbSystem = $params['wbSystem'];
+   $exepath = getcwd();
+   //$params['window']->edit->text = $exepath;
+   if($dirname = $params['window']->dialogPath('Compile Directory',$exepath))   
+   {  
+      $files = getFiles($dirname);
+      
+      if($mainfile = $params['window']->dialogOpen('Select Main Script',$filter,$dirname))   
+      {  clearstatcache();
+         if ($loc = array_search($mainfile,$files))
+         {  unset($files[$loc]);
+         }  
+         echo "Compiling $dirname\n\n";
+         $wbSystem->edit->text = ob_get_contents();
+         
+         complexEXE($mainfile, $files,$dirname);
+        
+         $ret = ob_get_contents();
+  			
+  			ob_end_clean();
+   
+   		$ret = str_replace(chr(13),"\n", $ret);
+   
+   		$params['window']->edit->text = $ret;
+      }
+   }
+      
+
+   
+}
+
+function menu_set_type($params)
+{
+   $filter = array(array('phc-win executables','*.exe'));
+   $path = getcwd();
+   $filename = $params['window']->dialogOpen('Open file',$filter, $path ) ;
+   if ($filename)
+   {  setEXEtype($filename, $params['window']);
+   }
+}
+
+function resizeMain($params)
+{
+   $winsize = $params['window']->getSize(true);
+   $params['wbSystem']->edit->setSize($winsize['width']-10 , $winsize['height']-10);
+}
+
+function closeMain($params)
+{     
+   $params['wbSystem']->main->destroy();  
+   exit;
+}
+
+function about ($params)
+{	global $edittext;
+	wb_message_box(null,$edittext);
+	
+}
