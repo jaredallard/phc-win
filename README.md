@@ -13,8 +13,8 @@ PHC-WIN is a php complier/embeder. It takes [multiple] files and combines them i
 
   
  ## Authors ##
-  - [frantik] (swiftlytilting.com) Original Maintainer
-  - [RainbowDashDC] (rainbowdashdc.com) Current Maintainer.
+  - [frantik] (http://swiftlytilting.com) Original Maintainer
+  - [RainbowDashDC] (http://rainbowdashdc.com) Current Maintainer.
   
 ## License ##
 GNUGPLv3
