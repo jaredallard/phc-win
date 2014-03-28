@@ -19,11 +19,13 @@ PHC-WIN is a php complier/embeder. It takes [multiple] files and combines them i
 GNUGPLv3
 
 ## Compiling from source ##
-Compile phc-win with the directory option with the old version of phc-win (http://wiki.swiftlytilting.com/phc-win).
+Download the a release of the branch dependencies, or get the current files there.
 
-Copy into top of REDIST folder.
+Compile master with phc-win from (http://wiki.swiftlytilting.com/phc-win).
 
-A better method is being worked on.
+Place executable into top level of the dependencies folder. 
+
+Soon dependencies will be merged into master.
 
 ## Notice ##
 All source builds will have required .inc.php files in ./lib/includes/ for easy coding, and not having too recompile most of the time.
