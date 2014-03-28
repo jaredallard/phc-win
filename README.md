@@ -27,9 +27,5 @@ Place executable into top level of the dependencies folder.
 
 Soon dependencies will be merged into master.
 
-## Notice ##
-All source builds will have required .inc.php files in ./lib/includes/ for easy coding, and not having too recompile most of the time.
-Main builds will integrate them.
-
 ## Decompilation ##
 As this is turned into byte-code, decompiling is not possible, except ASM.
