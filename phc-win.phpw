@@ -12,7 +12,7 @@
  *
  */
 
-$version = '1.0.0';
+$version = '1.0.1-dev';
 $lib = 'lib/includes/';
 
 // Preload.
@@ -30,9 +30,7 @@ include_once('./'.$lib.'cl.inc.php');
 $main = $wbSystem->createWindow(ResizableWindow, 'main', 'phc-win '.$version, 750, 540);
 
 
-file_put_contents('./phc.ico',file_get_contents(exe_resource('./icon/phc.ico')));
-$main->setIcon('./phc.ico');
-unlink('./phc.ico');
+$main->setIcon('./lib/ico/phc.ico');
 
 $main->createControl(Menu, 'menu', array
                              (   '&File',
