@@ -10,6 +10,7 @@ PROMPT EXEC:
 @SET PHP_ARGS=--disable-all --enable-embed --enable-cli --with-winbinder --with-win32std
 @SET NW_VER=0.11.0
 @SET PHP_VER=5.6.3
+@SET PHP_SDK=https://minbox.com/gi/h6V9KQO/download
 
 IF NOT EXIST "src\" MD "src"
 IF NOT EXIST "src\depends" MD "src\depends"
@@ -30,6 +31,12 @@ IF NOT EXIST ".\php-src" (
 	echo "" >> php-src\ext\standard\winver.h
 )
 
+IF NOT EXIST ".\php-sdk" (
+	wget --no-check-certificate "!PHP_SDK!" -O "php-sdk-binary-tools-20110915.zip" || exit /b
+	unzip "php-sdk-binary-tools-20110915.zip" -d "php-sdk/"
+	del /q /f "php-sdk-binary-tools-20110915.zip"
+)
+
 IF NOT EXIST ".\nw" (
 	wget "http://dl.node-webkit.org/v0.11.0/node-webkit-v0.11.0-win-ia32.zip"
 	unzip "node-webkit-v0.11.0-win-ia32.zip"
@@ -38,12 +45,17 @@ IF NOT EXIST ".\nw" (
 )
 
 pushd "php-src/ext"
-git clone http://github.com/RDashINC/win32std win32std
-git clone https://github.com/stefan-loewe/WinBinder winbinder
+git clone http://github.com/RDashINC/win32std win32std 2>nul || echo "Already exists"
+git clone https://github.com/stefan-loewe/WinBinder winbinder 2>nul || echo "Already exists"
 popd
 
 @echo Setting up compilier
 call "!VCPATH!\vcvarsall.bat" || exit /b
+
+@echo Setting up PHP depends
+pushd "php-sdk"
+call bin\phpsdk_setvars.bat || exit /b
+popd
 
 @echo Building targets
 IF NOT EXIST "..\..\bin" MD "..\..\bin"

@@ -16,11 +16,30 @@ function upd(prog) {
  
 function startCompilier(output) {
 	/* Progress Bar */
+	var fs = require('fs');
 	upd(0);
+
+	/* Remove files, fixes #1
+	   Todo: Make array */
+	if(fs.existsSync("app.evb")) {
+		out("Cleaning app.evb")
+		fs.unlinkSync("app.evb");
+	}
+	if(fs.existsSync("tmp.exe")) {
+		out("Cleaning tmp.exe")
+		fs.unlinkSync("tmp.exe");
+	}
+	if(fs.existsSync("tmp-c.exe")) {
+		out("Cleaning tmp-c.exe")
+		fs.unlinkSync("tmp-c.exe");
+	}
+	if(fs.existsSync("main.php")) {
+		out("Cleaning main.php")
+		fs.unlinkSync("main.php");
+	}
 
 	/* Get file & set fs object */
 	window.output=$("#fileInput").val().replace(".php", ".exe");
-	var fs = require('fs');
 
 	/* Output newline */
 	$("#outputConsole").append("<span class='cmd'></span>");
