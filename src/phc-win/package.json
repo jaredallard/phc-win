@@ -1,0 +1,30 @@
+{
+	"main": "index.html",
+	"name": "PHC-WIN",
+	"description": "PHP embeder GUI",
+	"repository": {
+		"type": "git",
+		"url": "http://github.com/RDashINC/phc-win"
+	},
+	"license": "GNUGPLv3",
+	"author": {
+		"name": "RainbowDashDC",
+		"email": "rainbowdashdc@mezgrman.de"
+	},
+	"dependencies": {
+		"enigmavirtualbox": "*"
+	},
+	"window": {
+		"title": "PHC-WIN",
+		"height": 690,
+		"width": 500,
+		"max_height": 690,
+		"min_height": 690,
+		"max_width": 500,
+		"min_width": 500,
+		"toolbar": false
+	},
+	"webkit": {
+	  "plugin": true
+	}
+}

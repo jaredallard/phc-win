@@ -1,0 +1,89 @@
+body, html {
+	background-color: #858585;
+	height:100%;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    background-color: #4e5d6c;
+    border-left: 1px solid #4e5d6c;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: #aaa;
+}
+
+
+input:focus {
+	outline:none;
+}
+
+*:focus {
+    outline:none;
+}
+
+#headerText {
+	text-align:center;
+	color:#efefef;
+}
+#subheaderText {
+	text-align:center;
+	color:#bebebe;
+}
+#buttonWrapper {
+	padding:0;
+	margin:none;
+	height:230px;
+	background-color:#e3e3e3;
+}
+
+
+#upxLabel {
+	margin-top:20px;
+
+	font-size:18px;
+	font-weight:bold;
+	color:#989898;
+}
+.upx {
+	margin-left:20px;
+	margin-top:5px;
+}
+#evbLabel {
+	margin-top:20px;
+
+	font-size:18px;
+	font-weight:bold;
+	color:#989898;
+}
+#outputConsole {
+	overflow-y:scroll;
+	padding-left:-1px;
+	margin-right:auto;
+	height:200px;
+	background-color:#4e5d6c;
+}
+.cmd {
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size:11px;
+	margin-left:5px;
+}
+.evb {
+	margin-left:20px;
+	margin-top:5px;
+}
+#compileButton {
+	height:40px;
+	width:100%;
+	margin-top:-20px;
+	padding-top:-5px;
+}
+
+#commandWrapper {
+	margin-top:40px;
+	height:100%;
+}
