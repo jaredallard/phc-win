@@ -6,6 +6,7 @@
 		"type": "git",
 		"url": "http://github.com/RDashINC/phc-win"
 	},
+	"readme": "../../README.md",
 	"license": "GNUGPLv3",
 	"author": {
 		"name": "RainbowDashDC",

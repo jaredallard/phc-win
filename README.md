@@ -5,7 +5,6 @@ A Windows PHP EXE embeder
 * Supports UPX compression.
 * Supports Enigma Virtual Box EXE wrapping.
 * WINBINDER and WIN32STD statically compilied into PHP dll.
-*
 
 ## Download
 Check out Github release for prebuilt binaries.
@@ -23,9 +22,12 @@ Check out Github release for prebuilt binaries.
 
 ### Editable Options in `fetch_src.cmd`:
 
- * `PHP_VER`  = Version to download of PHP
- * `PHP_ARGS` = PHP Compiliation Arguments (notice adding extensions will likely require headers)
- * `VCPATH`   = Path to VC/ (that contains vcvarsall.bat)
+ * `PHP_VER`    = Version to download of PHP
+ * `PHP_ARGS`   = PHP Compiliation Arguments (notice adding extensions will likely require headers)
+ * `NW_VER`     = NW.js version
+ * `NW_VERSION` = NW.js name (used too be called node-webkit)
+ * `NW_ARCH`    = ARCH for NW.js
+ * `VCPATH`     = Path to VC/ (that contains vcvarsall.bat)
 
 ### Compiliation:
     Run `make.cmd`
