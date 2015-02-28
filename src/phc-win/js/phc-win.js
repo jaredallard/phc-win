@@ -13,7 +13,7 @@ function upd(prog) {
 		$("#cmdprog").removeClass("active");
 	}
 }
- 
+
 function startCompilier(output) {
 	/* Progress Bar */
 	var fs = require('fs');
@@ -39,7 +39,10 @@ function startCompilier(output) {
 	}
 
 	/* Get file & set fs object */
-	window.output=$("#fileInput").val().replace(".php", ".exe");
+	window.output=$("#fileInput").val().replace(".phpw", ".exe"); // patch for .phpw
+	if(window.output === $("#fileInput").val()) {
+		window.output=$("#fileInput").val().replace(".php", ".exe");
+	}
 
 	/* Output newline */
 	$("#outputConsole").append("<span class='cmd'></span>");

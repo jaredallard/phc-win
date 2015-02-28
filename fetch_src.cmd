@@ -11,12 +11,12 @@ PROMPT EXEC:
 :: NW.js configuration. (aka node-webkit)
 :: NOTE: For versions <0.12 use NW_NAME=node-webkit else use NW_NAME=nwjs
 :: ARCH: ia32 or x64
-@SET NW_VER=0.11.6
-@SET NW_NAME=node-webkit
+@SET NW_VER=0.12.0-rc1
+@SET NW_NAME=nwjs
 @SET NW_ARCH=ia32
 
 :: PHP options
-@SET PHP_VER=5.6.5
+@SET PHP_VER=5.6.6
 @SET PHP_ARGS=--disable-all --enable-embed --enable-cli --with-winbinder --with-win32std
 @SET PHP_SDK=https://minbox.com/gi/h6V9KQO/download
 
