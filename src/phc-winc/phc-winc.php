@@ -2,13 +2,14 @@
 	/** 
 	 * phc-winc - Now in PHP!
 	 *
-	 * @author RainbowDashDC <rainbowdashdc@mezgrman.de>
-	 * @license GNUGPLv3
-	 * @link http://github.com/RDashINC/phc-win
+	 * @author Jared Allard <jaredallard@outlook.com>
+	 * @license MIT
+	 * @link http://github.com/jaredallard/phc-win
 	 *
 	 **/
 
 	// Havn't coded PHP in like 1.5 years, here we go.
+	// using JSDoc in PHP, I guess that works?
 
 	class phcwin {
 		protected $binary;
@@ -24,7 +25,7 @@
 			$this->queue["post"] = array();
 			$this->pl            = new plugins(false);
 
-			echo "PHC-WIN v".$this->version." by RainbowDashDC\n";
+			echo "PHC-WIN v".$this->version." by Jared Allard\n";
 		}
 
 		public function help() {
@@ -33,13 +34,16 @@
 			echo 'phc-winc.exe input output [--with]';
 			echo "\n\n";
 			echo "Options:\n";
+			
+			// get only plugins that support enable flags.
 			foreach($this->pl->getAllWith() as $i => $v) {
 				if($v["with"]==1) {
 					echo '  --with-'.$v["name"].'=y/n'."\n";
 				}
 			}
+			
 			echo "\n";
-			echo "post bug reports to http://github.com/RDashINC/phc-win\n";
+			echo "post bug reports to http://github.com/jaredallard/phc-win\n";
 			exit(0);
 		}
 
