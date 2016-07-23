@@ -20,7 +20,7 @@ Check out Github release for prebuilt binaries.
 
 **Notice: Using anything other than Visual Studio 2013 will require a `fetch_src.cmd` modification.**
 
-### Editable Options in `fetch_src.cmd`:
+### Editable Options in `config.ini`:
 
  * `PHP_VER`    = Version to download of PHP
  * `PHP_ARGS`   = PHP Compiliation Arguments (notice adding extensions will likely require headers)
