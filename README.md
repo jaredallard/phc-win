@@ -1,10 +1,10 @@
 # PHC-WIN
 
-A multi-os php executable creator.
+### *This branch is for active development, see branch [v2.0.1](https://github.com/jaredallard/phc-win/tree/v2.0.1) for current release.*
 
-## Requirements
+<br />
 
-* Windows/Linux
+Create single file executables for your PHP applications.
 
 ## Install
 
