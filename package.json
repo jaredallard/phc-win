@@ -1,0 +1,29 @@
+{
+  "name": "phc-win",
+  "version": "1.0.0",
+  "description": "A PHP to executable system.",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaredallard/phc-win.git"
+  },
+  "keywords": [
+    "phc-win",
+    "phc",
+    "node",
+    "nwjs"
+  ],
+  "author": "Jared Allard <jaredallard@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaredallard/phc-win/issues"
+  },
+  "homepage": "https://github.com/jaredallard/phc-win#readme",
+  "dependencies": {
+    "async": "^2.0.1",
+    "debug": "^2.2.0"
+  }
+}
